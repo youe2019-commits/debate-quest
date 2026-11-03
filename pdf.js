@@ -1,10 +1,10 @@
 import {standards,source} from "./content.js";
 let fontPromise;
 function toBase64(bytes){let out="";for(let i=0;i<bytes.length;i+=32768)out+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(out);}
-async function fontData(){if(!fontPromise)fontPromise=fetch(new URL("./assets/fonts/NanumGothic-Regular.ttf",import.meta.url)).then(r=>{if(!r.ok)throw Error("Font HTTP "+r.status);return r.arrayBuffer();}).then(b=>toBase64(new Uint8Array(b))).catch(e=>{fontPromise=null;throw e;});return fontPromise;}
+async function fontData(){if(globalThis.__DEBATE_ASSETS__)return globalThis.__DEBATE_ASSETS__["assets/fonts/NanumGothic-Regular.ttf"].split(",")[1];if(!fontPromise)fontPromise=fetch(new URL("./assets/fonts/NanumGothic-Regular.ttf",import.meta.url)).then(r=>{if(!r.ok)throw Error("Font HTTP "+r.status);return r.arrayBuffer();}).then(b=>toBase64(new Uint8Array(b))).catch(e=>{fontPromise=null;throw e;});return fontPromise;}
 async function picture(topic){
  await document.fonts.ready;
- const img=new Image();img.src=new URL("./"+topic.image,import.meta.url).href;await img.decode();
+ const img=new Image();img.src=globalThis.__DEBATE_ASSETS__?.[topic.image]||new URL("./"+topic.image,import.meta.url).href;await img.decode();
  const canvas=document.createElement("canvas");canvas.width=1680;canvas.height=680;
  const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0,canvas.width,canvas.height);
  return canvas.toDataURL("image/png");

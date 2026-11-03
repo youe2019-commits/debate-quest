@@ -5,6 +5,7 @@
   "type": "module",
   "description": "중학교 사회 토론 활동",
   "scripts": {
+    "build:offline": "node build-offline.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:pdf": "node tests/pdf-check.mjs"
   },
